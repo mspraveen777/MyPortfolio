@@ -392,13 +392,100 @@
         height: 320px;
       }
     }
+    /* LOGO & PROFILE GROUP */
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .profile-circle {
+      width: 4rem;
+      height: 4rem;
+      border-radius: 50%;
+      overflow: hidden;
+      border: .2rem solid var(--main-color);
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 0 1rem rgba(0, 238, 255, 0.3);
+    }
+    .profile-circle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 1.5rem var(--main-color);
+    }
+    .profile-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    /* PROFILE PREVIEW MODAL (LIGHTBOX) */
+    .profile-modal {
+      display: none;
+      position: fixed;
+      z-index: 10000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      justify-content: center;
+      align-items: center;
+    }
+    .profile-modal.show {
+      display: flex;
+      animation: fadeIn 0.4s ease forwards;
+    }
+    .modal-content {
+      margin: auto;
+      display: block;
+      max-width: 85%;
+      max-height: 85%;
+      border-radius: 2rem;
+      border: 3px solid var(--main-color);
+      box-shadow: 0 0 30px rgba(0, 238, 255, 0.5);
+      transform: scale(0.7);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .profile-modal.show .modal-content {
+      transform: scale(1);
+    }
+    .modal-close {
+      position: absolute;
+      top: 3rem;
+      right: 5rem;
+      color: #fff;
+      font-size: 6rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+    .modal-close:hover {
+      color: var(--main-color);
+      transform: scale(1.2) rotate(90deg);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @media (max-width: 768px) {
+      .header {
+        justify-content: space-between;
+      }
+    }
   </style>
 </head>
 <body>
   <canvas id="three-canvas"></canvas>
 
   <header class="header">
-    <a href="#" class="logo">Portfolio<span>.</span></a>
+    <div class="logo-group">
+      <a href="#" class="logo">Portfolio<span>.</span></a>
+      <div class="profile-circle" id="profile-trigger">
+        <img src="home.jpg" alt="Profile Thumbnail"/>
+      </div>
+    </div>
     <i class='bx bx-menu' id="menu-icon"></i>
     <nav class="navbar">
       <a href="#home" class="active">Home</a>
@@ -771,6 +858,35 @@
     strings:['Software Developer','Backend Developer','Fullstack Developer','Recent Graduate'],
     typeSpeed:100, backSpeed:100, backDelay:1000, loop:true
   });
+
+  // ===== PROFILE IMAGE PREVIEW MODAL =====
+  const profileTrigger = document.getElementById('profile-trigger');
+  const profileModal = document.getElementById('profile-modal');
+  const modalClose = document.getElementById('modal-close');
+
+  profileTrigger.addEventListener('click', (e) => {
+    e.preventDefault();
+    profileModal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  });
+
+  const closeModal = () => {
+    profileModal.classList.remove('show');
+    document.body.style.overflow = '';
+  };
+
+  modalClose.addEventListener('click', closeModal);
+  profileModal.addEventListener('click', (e) => {
+    if (e.target === profileModal) {
+      closeModal();
+    }
+  });
   </script>
+
+  <!-- PROFILE PREVIEW MODAL -->
+  <div class="profile-modal" id="profile-modal">
+    <span class="modal-close" id="modal-close">&times;</span>
+    <img class="modal-content" id="modal-img" src="home.jpg" alt="Profile Preview"/>
+  </div>
 </body>
 </html>
