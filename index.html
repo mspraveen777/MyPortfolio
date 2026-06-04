@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Praveen Sunagar | Portfolio</title>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;text-decoration:none;border:none;outline:none;scroll-behavior:smooth;font-family:'Poppins',sans-serif;}
+    :root{
+      --bg-color:#1f242d;
+      --second-bg-color:#323946;
+      --text-color:#fff;
+      --main-color:#00eeff;
+    }
+    html{font-size:62.5%;overflow-x:hidden;}
+    body{background:var(--bg-color);color:var(--text-color);}
+
+    #three-canvas{
+      position:fixed;top:0;left:0;width:100vw;height:100vh;
+      z-index:-1;pointer-events:none;background:#0f121a;
+    }
+
+    section{
+      min-height:100vh;padding:10rem 9% 2rem;
+      position:relative;z-index:1;background:transparent!important;
+    }
+
+    /* HEADER */
+    .header{
+      position:fixed;top:0;left:0;width:100%;padding:2rem 9%;
+      background:rgba(31,36,45,0.85)!important;backdrop-filter:blur(10px);
+      display:flex;justify-content:space-between;align-items:center;
+      z-index:100;border-bottom:.1rem solid rgba(0,0,0,.2);
+      transition:.3s;
+    }
+    .header.sticky{border-bottom:.1rem solid var(--main-color);}
+    .logo{font-size:2.5rem;color:var(--text-color);font-weight:700;}
+    .logo span{color:var(--main-color);}
+    .navbar a{font-size:1.7rem;color:var(--text-color);margin-left:4rem;transition:.3s;font-weight:500;}
+    .navbar a:hover,.navbar a.active{color:var(--main-color);}
+    #menu-icon{font-size:3.6rem;color:var(--text-color);display:none;cursor:pointer;}
+
+    /* HOME */
+    .home{display:flex;justify-content:space-between;align-items:center;gap:4rem;}
+    .home-content h3{font-size:3.2rem;font-weight:700;}
+    .home-content h3:nth-of-type(2){margin-bottom:2rem;}
+    span.multiple-text{color:var(--main-color);}
+    .home-content h1{font-size:5.6rem;font-weight:700;line-height:1.3;}
+    .home-content p{font-size:1.6rem;line-height:1.8;color:#ababab;}
+
+    /* HEXAGON */
+    .home-3d-card-zone{display:flex;justify-content:center;align-items:center;min-width:320px;}
+    /* 3D HEXAGON PORTRAITS */
+    .hexagon-container {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      filter: drop-shadow(0 0 20px rgba(0, 238, 255, 0.45));
+      transition: filter 0.3s ease;
+    }
+    .hexagon-container.home-hex {
+      width: 300px;
+      height: 340px;
+      animation: floatImage 4s ease-in-out infinite;
+    }
+    .hexagon-container.about-hex {
+      width: 350px;
+      height: 400px;
+    }
+    
+    /* Background Layer (Visual Hexagon Shape) */
+    .hexagon-back {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--main-color);
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+      transition: background 0.3s ease;
+    }
+    
+    .hexagon-back-inner {
+      width: 95%;
+      height: 95%;
+      background: var(--bg-color);
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      overflow: hidden;
+    }
+    .about-hex .hexagon-back-inner {
+      background: var(--second-bg-color);
+    }
+    
+    /* 3D Portrait - Clipped Layer (Lower Body / Background) */
+    .hexagon-img-clipped {
+      position: absolute;
+      width: 95%;
+      height: 95%;
+      object-fit: cover;
+      object-position: center top;
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      z-index: 2;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    /* 3D Portrait - Popping Out Layer (Upper Body / Head) */
+    .hexagon-img-pop {
+      position: absolute;
+      width: 95%;
+      height: 95%;
+      object-fit: cover;
+      object-position: center top;
+      z-index: 3;
+      /* Show the top portion to prevent bottom overflow */
+      clip-path: polygon(0% 0%, 100% 0%, 100% 48%, 0% 48%);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    /* Hover Effects - BOTH layers scale and move in perfect sync to avoid any split */
+    .hexagon-container:hover .hexagon-img-clipped {
+      transform: scale(1.1) translateY(-6%);
+    }
+    .hexagon-container:hover .hexagon-img-pop {
+      transform: scale(1.1) translateY(-6%);
+    }
+    @keyframes floatImage{0%,100%{transform:translateY(0);}50%{transform:translateY(-2.4rem);}}
+
+    /* ABOUT HEX - title adjustments */
+    .about-content .about-heading{font-size:4.5rem;font-weight:700;line-height:1.2;margin-bottom:1rem;}
+    .about-content .about-heading span{color:var(--main-color);}
+
+    /* SOCIALS & BTN */
+    .social-media a{
+      display:inline-flex;justify-content:center;align-items:center;
+      width:4rem;height:4rem;background:transparent;
+      border:.2rem solid var(--main-color);border-radius:50%;
+      font-size:2rem;color:var(--main-color);
+      margin:3rem 1.5rem 3rem 0;transition:.5s ease;
+    }
+    .social-media a:hover{background:var(--main-color);color:var(--bg-color);box-shadow:0 0 1.5rem var(--main-color);}
+    .btn{
+      display:inline-block;padding:1rem 2.8rem;background:var(--main-color);
+      border-radius:4rem;box-shadow:0 0 1rem var(--main-color);
+      font-size:1.6rem;color:var(--bg-color);letter-spacing:.1rem;
+      font-weight:600;transition:.5s ease;cursor:pointer;
+    }
+    .btn:hover{box-shadow:0 0 2rem var(--main-color);transform:scale(1.03);}
+
+    /* ABOUT */
+    .about{display:flex;justify-content:center;align-items:center;gap:6rem;flex-wrap:nowrap;}
+    .about-img{flex-shrink:0;}
+    .heading{text-align:center;font-size:4.5rem;margin-bottom:5rem;}
+    .heading span{color:var(--main-color);}
+    .about-content{flex:1;}
+    .about-content h2{text-align:left;line-height:1.2;font-size:4.5rem;}
+    .about-content h3{font-size:2.6rem;color:var(--main-color);}
+    .about-content p{font-size:1.6rem;margin:2rem 0 3rem;line-height:1.8;color:#d1d5db;}
+
+    /* EXPERIENCE */
+    .experience h2{margin-bottom:7rem;}
+    .experience-container{
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .experience-box{
+      background: var(--second-bg-color);
+      padding: 3rem;
+      border-radius: 2rem;
+      border: .2rem solid transparent;
+      transition: .5s ease;
+    }
+    .experience-box:hover{
+      border-color: var(--main-color);
+      transform: scale(1.01);
+      box-shadow: 0 0 2rem rgba(0,238,255,0.15);
+    }
+    .experience-content-header {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .experience-content-header i{
+      font-size: 4.5rem;
+      color: var(--main-color);
+    }
+    .experience-title-info {
+      flex: 1;
+      min-width: 25rem;
+      text-align: left;
+    }
+    .experience-box h3{
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--text-color);
+    }
+    .company-name {
+      font-size: 1.6rem;
+      color: var(--main-color);
+      font-weight: 500;
+      display: block;
+      margin-top: 0.5rem;
+    }
+    .experience-date {
+      font-size: 1.5rem;
+      color: #ababab;
+      font-weight: 600;
+      background: var(--bg-color);
+      padding: 0.5rem 1.5rem;
+      border-radius: 2rem;
+      border: 1px solid rgba(0, 238, 255, 0.2);
+    }
+    .experience-details {
+      list-style: none;
+      padding-left: 0;
+      text-align: left;
+    }
+    .experience-details li {
+      font-size: 1.5rem;
+      color: #d1d5db;
+      line-height: 1.8;
+      position: relative;
+      padding-left: 2.5rem;
+      margin-bottom: 1rem;
+      list-style: none;
+    }
+    .experience-details li::before {
+      content: '\25b8';
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--main-color);
+      font-size: 1.8rem;
+      line-height: 1.8;
+    }
+
+    /* SKILLS */
+    .skills h2 {
+      margin-bottom: 7rem;
+    }
+    .skills-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+      gap: 3rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .skills-box {
+      background: var(--second-bg-color);
+      padding: 3rem 2rem;
+      border-radius: 2rem;
+      border: .2rem solid transparent;
+      transition: .5s ease;
+      text-align: center;
+    }
+    .skills-box:hover {
+      border-color: var(--main-color);
+      transform: translateY(-5px);
+      box-shadow: 0 0 2rem rgba(0, 238, 255, 0.15);
+    }
+    .skills-box h3 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 2.5rem;
+      color: var(--main-color);
+    }
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+    }
+    .skill-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.8rem;
+      width: 7.5rem;
+      transition: .3s;
+    }
+    .skill-item:hover {
+      transform: scale(1.15);
+    }
+    .skill-item i {
+      font-size: 4rem;
+      transition: .3s;
+    }
+    .skill-item:hover i {
+      filter: drop-shadow(0 0 8px var(--main-color));
+    }
+    .skill-item span {
+      font-size: 1.3rem;
+      color: #ababab;
+      font-weight: 500;
+    }
+
+    /* PORTFOLIO */
+    .portfolio-container{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(35rem,1fr));gap:2.5rem;
+    }
+    .portfolio-box{
+      position:relative;border-radius:2rem;
+      box-shadow:0 0 1rem rgba(0,0,0,.1);overflow:hidden;display:flex;
+    }
+    .portfolio-box img{width:100%;height:25rem;object-fit:cover;transition:.5s ease;}
+    .portfolio-box:hover img{transform:scale(1.1);}
+    .portfolio-layer{
+      position:absolute;bottom:0;left:0;width:100%;height:100%;
+      background:linear-gradient(rgba(0,0,0,.1),var(--main-color));
+      display:flex;justify-content:center;align-items:center;
+      flex-direction:column;text-align:center;padding:0 4rem;
+      transform:translateY(100%);transition:.5s ease;
+    }
+    .portfolio-box:hover .portfolio-layer{transform:translateY(0);}
+    .portfolio-layer h4{font-size:2.4rem;color:var(--bg-color);font-weight:700;}
+    .portfolio-layer p{font-size:1.4rem;margin:.3rem 0 1rem;color:var(--bg-color);font-weight:500;}
+    .portfolio-layer a{
+      display:inline-flex;justify-content:center;align-items:center;
+      width:5rem;height:5rem;background:var(--text-color);border-radius:50%;
+    }
+    .portfolio-layer a i{font-size:2.5rem;color:var(--bg-color);}
+
+    /* CONTACT */
+    .contact h2{margin-bottom:3rem;}
+    .contact form{max-width:70rem;margin:1rem auto;text-align:center;margin-bottom:3rem;}
+    .contact form .input-box{display:flex;justify-content:space-between;flex-wrap:wrap;}
+    .contact form .input-box input,
+    .contact form textarea{
+      width:100%;padding:1.5rem;font-size:1.6rem;
+      color:var(--text-color);background:var(--second-bg-color);
+      border-radius:.8rem;margin:.7rem 0;
+    }
+    .contact form .input-box input{width:49%;}
+    .contact form textarea{resize:none;}
+    .contact form .btn{margin-top:2rem;}
+
+    /* FOOTER */
+    .footer{
+      display:flex;flex-direction:column;justify-content:center;align-items:center;gap:1.5rem;
+      padding:2rem 9%;border-top:.1rem solid rgba(255,255,255,.1);
+      text-align:center;
+    }
+    .footer-text p{font-size:1.6rem;}
+    .footer-iconTop a{
+      display:inline-flex;justify-content:center;align-items:center;
+      padding:.8rem;background:var(--main-color);border-radius:.8rem;transition:.5s ease;
+    }
+    .footer-iconTop a:hover{box-shadow:0 0 1rem var(--main-color);}
+    .footer-iconTop a i{font-size:2.4rem;color:var(--bg-color);}
+
+    /* RESPONSIVE */
+    @media(max-width:1200px){html{font-size:55%;}}
+    @media(max-width:991px){
+      .header{padding:2rem 3%;}
+      section{padding:10rem 3% 2rem;}
+      .footer{padding:2rem 3%;}
+    }
+    @media(max-width:768px){
+      #menu-icon{display:block;}
+      .navbar{
+        position:absolute;top:100%;left:0;width:100%;
+        padding:1rem 3%;background:var(--bg-color);
+        border-top:.1rem solid rgba(0,0,0,.2);
+        box-shadow:0 .5rem 1rem rgba(0,0,0,.2);display:none;
+      }
+      .navbar.active{display:block;}
+      .navbar a{display:block;font-size:2rem;margin:3rem 0;}
+      .home{flex-direction:column;text-align:center;}
+      .home-content h1{font-size:5rem;}
+      .about{flex-direction:column-reverse;text-align:center;flex-wrap:wrap;}
+      .about-content h2{text-align:center;font-size:3.5rem;}
+    }
+    @media(max-width:480px){
+      .hexagon-container.home-hex {
+        width: 250px;
+        height: 285px;
+      }
+      .hexagon-container.about-hex {
+        width: 280px;
+        height: 320px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="three-canvas"></canvas>
+
+  <header class="header">
+    <a href="#" class="logo">Portfolio<span>.</span></a>
+    <i class='bx bx-menu' id="menu-icon"></i>
+    <nav class="navbar">
+      <a href="#home" class="active">Home</a>
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#portfolio">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- HOME -->
+  <section class="home" id="home">
+    <div class="home-content">
+      <h3>Hello, It's Me</h3>
+      <h1>Praveen Sunagar</h1>
+      <h3>And I'm a <span class="multiple-text"></span></h3>
+      <p>As a recent Computer Science graduate and an aspiring Full-Stack &amp; Backend Developer, I bridge the gap between robust backend architectures and dynamic user experiences. With hands-on internship experience in building intelligent Python-based systems, fine-tuning YOLO models, and crafting agentic AI solutions, I love solving complex real-world problems. Eager to contribute to innovative software engineering teams, I combine foundational engineering principles with cutting-edge technologies to build scalable, high-performance applications.</p>
+      <div class="social-media">
+        <a href="https://linkedin.com/in/mspraveen777" target="_blank"><i class='bx bxl-linkedin'></i></a>
+        <a href="https://github.com/mspraveen777" target="_blank"><i class='bx bxl-github'></i></a>
+        <a href="mailto:mspraveen7777@gmail.com"><i class='bx bx-envelope'></i></a>
+      </div>
+      <a href="resume.pdf" download class="btn">Download CV</a>
+    </div>
+        <div class="home-3d-card-zone">
+      <div class="hexagon-container home-hex">
+        <div class="hexagon-back">
+          <div class="hexagon-back-inner"></div>
+        </div>
+        <img class="hexagon-img-clipped" src="home.jpg" alt="Praveen Sunagar"/>
+        <img class="hexagon-img-pop" src="home.jpg" alt="Praveen Sunagar"/>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="about-img">
+      <div class="hexagon-container about-hex">
+        <div class="hexagon-back">
+          <div class="hexagon-back-inner"></div>
+        </div>
+        <img class="hexagon-img-clipped" src="about.jpg" alt="Praveen About"/>
+        <img class="hexagon-img-pop" src="about.jpg" alt="Praveen About"/>
+      </div>
+    </div>
+    <div class="about-content">
+      <h2 class="about-heading">About <span>Me</span></h2>
+      <h3>Full-Stack &amp; Backend Developer | AI Enthusiast</h3>
+      <p>I am a highly motivated Computer Science Engineering graduate from MVJ College of Engineering with a strong academic foundation (CGPA: 8.34). As an aspiring Full-Stack and Backend Developer, I have gained hands-on experience through internships at Pushkala Technologies and Edunet Foundation, where I designed and implemented scalable web interfaces, robust backend APIs, and database structures. I thrive on translating complex requirements into clean, optimized code, and bridging the gap between frontend experiences and backend logistics.</p>
+      <p>My passion extends beyond traditional web architectures into the realm of Artificial Intelligence and Computer Vision. I have worked on cutting-edge projects including fine-tuning YOLOv8 object detection models and building Agentic AI systems that generate hardware-level VLSI code from natural language prompts. Driven by curiosity and a desire to build next-generation applications, I am eager to kickstart my career as a fresher in a collaborative software development team where I can apply my skills in Python, Java, SQL, and modern web frameworks to deliver high-impact solutions.</p>
+      <a href="#contact" class="btn">Read More</a>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="experience" id="experience">
+    <h2 class="heading">Work <span>Experience</span></h2>
+    <div class="experience-container">
+      <div class="experience-box">
+        <div class="experience-content-header">
+          <i class='bx bx-briefcase-alt-2'></i>
+          <div class="experience-title-info">
+            <h3>Software Engineer Intern</h3>
+            <span class="company-name">Pushkala Technologies Pvt. Ltd</span>
+          </div>
+          <span class="experience-date">Jan 2026 - May 2026</span>
+        </div>
+        <ul class="experience-details">
+          <li>Developed a Flutter and Flet mobile app with a Python Flask backend, and built interactive desktop, ensuring end-to-end application functionality.</li>
+          <li>Trained and fine-tuned a YOLOv8 object detection model, managing the full pipeline from data preparation to evaluation and deployment.</li>
+          <li>Built an Agentic AI system that generates VLSI code from natural language prompts, automating hardware design workflows using AI.</li>
+          <li>Redesigned the company website using HTML and CSS, enhancing visual design and overall user experience.</li>
+          <li>Collaborated with team members using version control systems such as Git to organize modifications and assign tasks.</li>
+        </ul>
+      </div>
+
+      <div class="experience-box">
+        <div class="experience-content-header">
+          <i class='bx bx-briefcase-alt-2'></i>
+          <div class="experience-title-info">
+            <h3>Front End Web Developer Intern</h3>
+            <span class="company-name">Edunet Foundation</span>
+          </div>
+          <span class="experience-date">Aug 2025 - Sep 2025</span>
+        </div>
+        <ul class="experience-details">
+          <li>Developed responsive web interfaces using HTML, CSS, and JavaScript, improving usability across desktop and mobile devices.</li>
+          <li>Implemented clean, structured frontend code following best practices for readability and maintainability.</li>
+          <li>Identified and fixed cross-browser compatibility issues, ensuring consistent performance across platforms.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="skills" id="skills">
+    <h2 class="heading">Technical <span>Skills</span></h2>
+    <div class="skills-container">
+      <!-- LANGUAGES CARD -->
+      <div class="skills-box">
+        <h3>Languages</h3>
+        <div class="skills-list">
+          <div class="skill-item">
+            <i class="devicon-python-plain colored"></i>
+            <span>Python</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-java-plain colored"></i>
+            <span>Java</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-c-plain colored"></i>
+            <span>C</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-html5-plain colored"></i>
+            <span>HTML5</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-css3-plain colored"></i>
+            <span>CSS3</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-mysql-plain colored"></i>
+            <span>SQL / DB</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- FRAMEWORKS & TECH CARD -->
+      <div class="skills-box">
+        <h3>Frameworks &amp; Tech</h3>
+        <div class="skills-list">
+          <div class="skill-item">
+            <i class="devicon-fastapi-plain colored"></i>
+            <span>FastAPI</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-flask-original colored"></i>
+            <span>Flask</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-linux-plain colored"></i>
+            <span>Linux</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-github-original colored"></i>
+            <span>GitHub</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-nginx-original colored"></i>
+            <span>NGINX</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-amazonwebservices-plain-wordmark colored"></i>
+            <span>AWS</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- DEVELOPER & AI TOOLS CARD -->
+      <div class="skills-box">
+        <h3>Developer &amp; AI Tools</h3>
+        <div class="skills-list">
+          <div class="skill-item">
+            <i class="devicon-vscode-plain colored"></i>
+            <span>VS Code</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-postman-plain colored"></i>
+            <span>Postman</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-jupyter-plain colored"></i>
+            <span>Jupyter</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-intellij-plain colored"></i>
+            <span>IntelliJ</span>
+          </div>
+          <div class="skill-item">
+            <i class="devicon-opencv-plain colored"></i>
+            <span>OpenCV</span>
+          </div>
+          <div class="skill-item">
+            <i class="bx bx-brain" style="color: #00eeff;"></i>
+            <span>AI Tools</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section class="portfolio" id="portfolio">
+    <h2 class="heading">Latest <span>Projects</span></h2>
+    <div class="portfolio-container">
+      <div class="portfolio-box">
+        <img src="project_swiftmeet.png" alt="SwiftMeet: Planner"/>
+        <div class="portfolio-layer">
+          <h4>SwiftMeet: Planner</h4>
+          <p>Location-based scheduling leveraging Flask backend &amp; Google Maps API.</p>
+          <a href="https://github.com/mspraveen777" target="_blank"><i class='bx bx-link-external'></i></a>
+        </div>
+      </div>
+      <div class="portfolio-box">
+        <img src="project_wanderlust.png" alt="Wanderlust Adventures"/>
+        <div class="portfolio-layer">
+          <h4>Wanderlust Adventures</h4>
+          <p>Responsive tourism portal with dynamic search deployed via Netlify.</p>
+          <a href="https://wanderlust-adventures1.netlify.app/" target="_blank"><i class='bx bx-link-external'></i></a>
+        </div>
+      </div>
+      <div class="portfolio-box">
+        <img src="project_facerecog.png" alt="Face Recognition Engine"/>
+        <div class="portfolio-layer">
+          <h4>Face Recognition Engine</h4>
+          <p>Real-time video frame security interface with rapid webcam analytics.</p>
+          <a href="https://github.com/mspraveen777" target="_blank"><i class='bx bx-link-external'></i></a>
+        </div>
+      </div>
+      <div class="portfolio-box">
+        <img src="project_riscagent.png" alt="AI_RISC_AGENT"/>
+        <div class="portfolio-layer">
+          <h4>AI_RISC_AGENT</h4>
+          <p>An AI-powered autonomous agent suite designed for RISC-V VLSI architecture generation and automated workflow optimization.</p>
+          <a href="https://github.com/mspraveen777/AI_RISC_AGENT" target="_blank"><i class='bx bx-link-external'></i></a>
+        </div>
+      </div>
+      <div class="portfolio-box">
+        <img src="project_yolomodel.png" alt="Yolo-Model"/>
+        <div class="portfolio-layer">
+          <h4>Yolo-Model</h4>
+          <p>Real-time object tracking and custom detection models based on YOLOv8, applied to traffic and autonomous system monitoring.</p>
+          <a href="https://github.com/mspraveen777/Yolo-Model" target="_blank"><i class='bx bx-link-external'></i></a>
+        </div>
+      </div>
+      <div class="portfolio-box">
+        <img src="project_pravinstrac.png" alt="Pravin-s-Trac"/>
+        <div class="portfolio-layer">
+          <h4>Pravin-s-Trac</h4>
+          <p>A Python-based API stack built using FastAPI and PostgreSQL, providing robust tracking, data parsing, and user authentication.</p>
+          <a href="https://github.com/mspraveen777/Pravin-s-Trac" target="_blank"><i class='bx bx-link-external'></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <h2 class="heading">Contact <span>Me!</span></h2>
+    <form action="https://api.web3forms.com/submit" method="POST">
+      <!-- To receive submissions in your email:
+           1. Go to https://web3forms.com
+           2. Enter your email to get a free Access Key
+           3. Replace "YOUR_ACCESS_KEY_HERE" with your key below -->
+      <input type="hidden" name="access_key" value="58fdf3e7-e7a8-40f0-8125-3fb4fbcfeb7d"/>
+
+      <div class="input-box">
+        <input type="text" name="name" placeholder="Full Name" required/>
+        <input type="email" name="email" placeholder="Email Address" required/>
+      </div>
+      <div class="input-box">
+        <input type="number" name="phone" placeholder="Mobile Number"/>
+        <input type="text" name="subject" placeholder="Email Subject"/>
+      </div>
+      <textarea name="message" cols="30" rows="10" placeholder="Your Message" required></textarea>
+      <input type="submit" value="Send Message" class="btn"/>
+    </form>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-text">
+      <p>Copyright &copy; 2026 by Praveen | All Rights Reserved.</p>
+    </div>
+    <div class="footer-iconTop">
+      <a href="#home"><i class='bx bx-up-arrow-alt'></i></a>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://unpkg.com/scrollreveal"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+
+  <script>
+  // ===== MENU TOGGLE =====
+  const menuIcon = document.querySelector('#menu-icon');
+  const navbar = document.querySelector('.navbar');
+  menuIcon.onclick = () => {
+    menuIcon.classList.toggle('bx-x');
+    navbar.classList.toggle('active');
+  };
+
+  // ===== SCROLL ACTIVE LINK =====
+  const sections = document.querySelectorAll('section');
+  const navLinks = document.querySelectorAll('header nav a');
+  window.onscroll = () => {
+    sections.forEach(sec => {
+      const top = window.scrollY;
+      const offset = sec.offsetTop - 150;
+      const height = sec.offsetHeight;
+      const id = sec.getAttribute('id');
+      if(top >= offset && top < offset + height) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        document.querySelector('header nav a[href*=' + id + ']').classList.add('active');
+      }
+    });
+    document.querySelector('header').classList.toggle('sticky', window.scrollY > 100);
+    menuIcon.classList.remove('bx-x');
+    navbar.classList.remove('active');
+  };
+
+  // ===== THREE.JS PARTICLES =====
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({canvas: document.querySelector('#three-canvas'), alpha:true, antialias:true});
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  const count = 1200;
+  const positions = new Float32Array(count * 3);
+  const colors = new Float32Array(count * 3);
+  for(let i=0; i<count*3; i+=3) {
+    positions[i]   = (Math.random()-0.5)*35;
+    positions[i+1] = (Math.random()-0.5)*35;
+    positions[i+2] = (Math.random()-0.5)*35;
+    colors[i]=0; colors[i+1]=0.93; colors[i+2]=1.0;
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(positions,3));
+  geo.setAttribute('color', new THREE.BufferAttribute(colors,3));
+  const mat = new THREE.PointsMaterial({size:0.08,vertexColors:true,transparent:true,opacity:0.65,blending:THREE.AdditiveBlending});
+  const particles = new THREE.Points(geo, mat);
+  scene.add(particles);
+  camera.position.z = 8;
+
+  let mouseX=0, mouseY=0;
+  document.addEventListener('mousemove', e => {
+    mouseX = (e.clientX/window.innerWidth)-0.5;
+    mouseY = (e.clientY/window.innerHeight)-0.5;
+  });
+
+  const clock = new THREE.Clock();
+  const animate = () => {
+    const t = clock.getElapsedTime();
+    particles.rotation.y = t*0.04 + mouseX*0.4;
+    particles.rotation.x = t*0.02 + (-mouseY*0.4);
+    renderer.render(scene, camera);
+    requestAnimationFrame(animate);
+  };
+  animate();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  // ===== SCROLL REVEAL =====
+  ScrollReveal({reset:true, distance:'8rem', duration:2000, delay:200});
+  ScrollReveal().reveal('.home-content, .heading', {origin:'top'});
+  ScrollReveal().reveal('.experience-container, .portfolio-container, .contact form', {origin:'bottom'});
+  ScrollReveal().reveal('.home-3d-card-zone, .about-img', {origin:'left'});
+  ScrollReveal().reveal('.home-content p, .about-content', {origin:'right'});
+
+  // ===== TYPED.JS =====
+  new Typed('.multiple-text', {
+    strings:['Software Developer','Backend Developer','Fullstack Developer','Recent Graduate'],
+    typeSpeed:100, backSpeed:100, backDelay:1000, loop:true
+  });
+  </script>
+</body>
+</html>
