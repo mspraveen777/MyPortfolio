@@ -19,4 +19,4 @@ A responsive personal portfolio website built to showcase my skills, projects, e
 ## Purpose
 This portfolio serves as a central place to highlight my technical skills, academic projects, and professional journey, making it easier for recruiters and collaborators to learn more about me.
 
-🌐 Live Demo: [Portfolio Website](https://-m-s-praveen-portfolio.netlify.app/)
+🌐 Live Demo: [Portfolio Website](https://m-s-praveen-portfolio.netlify.app/)
